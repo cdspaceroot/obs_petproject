@@ -8,4 +8,9 @@ def current_time():
     return str(datetime.datetime.now())
 
 
+@bottle.route("/")
+def index():
+    return ""
+
+
 bottle.run(host="localhost", port=8080)
