@@ -105,6 +105,16 @@ BANREQUESTS_HTML = """
 </script>
 """
 
+BANADMIN_HTML = """
+<form method="post">
+
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username"><br>
+
+    <input type="submit" value="В бан!">
+</form>
+"""
+
 
 @bottle.route("/current_time")
 def current_time():
@@ -115,6 +125,11 @@ def current_time():
 def get_ban_requests():
     bottle.response.content_type = "application/json"
     return json.dumps({"self": 0})
+
+
+@bottle.route("/banadmin")
+def show_ban_admin_page():
+    return BANADMIN_HTML
 
 
 @bottle.route("/show_banrequests")
