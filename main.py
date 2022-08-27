@@ -1,4 +1,5 @@
 import datetime
+import json
 
 import bottle
 
@@ -48,6 +49,12 @@ INDEX_HTML = """
 @bottle.route("/current_time")
 def current_time():
     return str(datetime.datetime.now())
+
+
+@bottle.route("/banrequests")
+def get_ban_requests():
+    bottle.response.content_type = "application/json"
+    return json.dumps({"self": 0})
 
 
 @bottle.route("/")
