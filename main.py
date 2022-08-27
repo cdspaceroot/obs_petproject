@@ -132,6 +132,11 @@ def show_ban_admin_page():
     return BANADMIN_HTML
 
 
+@bottle.post("/banadmin")
+def process_ban_request():
+    return BANADMIN_HTML
+
+
 @bottle.route("/show_banrequests")
 def show_ban_requests():
     return BANREQUESTS_HTML
