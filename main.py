@@ -45,6 +45,66 @@ INDEX_HTML = """
 </script>
 """
 
+BANREQUESTS_HTML = """
+<link href="http://fonts.cdnfonts.com/css/gost-type-a" rel="stylesheet">
+
+<p style="
+        font-family:'GOST type A';
+        color:#ff0000;
+        font-size:80px;
+        font-weight:bold
+        "
+    >
+    Запросов на бан: <br>
+    <span id="banrequests"></span>
+</p>
+
+<script>
+
+    function update_banrequests(value){
+
+        let bans_as_dict = JSON.parse(value);
+
+        let bans_as_list = Object.keys(bans_as_dict).map(
+            (key) => { return [key, bans_as_dict[key]] }
+        );
+
+        bans_as_list.sort(
+            (first, second) => { return second[1] - first[1]}
+        );
+
+        let bans_content = [];
+
+        for (const item of bans_as_list) {
+            bans_content.push(`${item[0]}: ${item[1]}`);
+        };
+
+        const ban_block = document.getElementById('banrequests');
+        ban_block.innerHTML = bans_content.join('<br>');
+    }
+
+    function get_banrequests() {
+        let request = new XMLHttpRequest();
+
+        request.addEventListener( "load", function(event) {
+            if(event.target.status == 200){
+                update_banrequests(event.target.responseText);
+            } else {
+                console.log(event);
+            }
+        });
+
+        request.open("GET", 'http://localhost:8080/banrequests', true);
+        request.send(null);
+    };
+
+    window.addEventListener("load", function(event) {
+        setInterval(get_banrequests, 1000);
+    });
+
+</script>
+"""
+
 
 @bottle.route("/current_time")
 def current_time():
@@ -55,6 +115,11 @@ def current_time():
 def get_ban_requests():
     bottle.response.content_type = "application/json"
     return json.dumps({"self": 0})
+
+
+@bottle.route("/show_banrequests")
+def show_ban_requests():
+    return BANREQUESTS_HTML
 
 
 @bottle.route("/")
