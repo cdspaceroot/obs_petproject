@@ -15,6 +15,33 @@ INDEX_HTML = """
     >
     Текущее время: <span id="current_time"></span>
 </p>
+
+<script>
+
+    function update_time(value){
+        document.getElementById('current_time').innerHTML = value;
+    }
+
+    function get_time() {
+        let request = new XMLHttpRequest();
+
+        request.addEventListener( "load", function(event) {
+            if(event.target.status == 200){
+                update_time(event.target.responseText);
+            } else {
+                console.log(event);
+            }
+        });
+
+        request.open("GET", 'http://localhost:8080/current_time', true);
+        request.send(null);
+    };
+
+    window.addEventListener("load", function(event) {
+        setInterval(get_time, 1000);
+    });
+
+</script>
 """
 
 
